@@ -1,4 +1,4 @@
-# collusion
+# Labelling Application
 
 ## Project Description
 
