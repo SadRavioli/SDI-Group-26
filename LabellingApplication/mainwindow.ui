@@ -88,12 +88,12 @@
     <property name="title">
      <string>Class</string>
     </property>
-    <widget class="QPushButton" name="loadClassButton">
+    <widget class="QPushButton" name="classLoad">
      <property name="geometry">
       <rect>
        <x>10</x>
        <y>20</y>
-       <width>151</width>
+       <width>161</width>
        <height>31</height>
       </rect>
      </property>
@@ -101,33 +101,7 @@
       <string>Load Class</string>
      </property>
     </widget>
-    <widget class="QPushButton" name="addClassButton">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>70</y>
-       <width>151</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Add New Class</string>
-     </property>
-    </widget>
-    <widget class="QPushButton" name="classSortButton">
-     <property name="geometry">
-      <rect>
-       <x>10</x>
-       <y>120</y>
-       <width>151</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Order By Name</string>
-     </property>
-    </widget>
-    <widget class="QListWidget" name="listWidget_2">
+    <widget class="QListWidget" name="classList">
      <property name="geometry">
       <rect>
        <x>180</x>
@@ -135,6 +109,63 @@
        <width>581</width>
        <height>131</height>
       </rect>
+     </property>
+    </widget>
+    <widget class="QLineEdit" name="classEnter">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>90</y>
+       <width>161</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>7</pointsize>
+      </font>
+     </property>
+     <property name="placeholderText">
+      <string>Add Class Name Then Press &quot;Add&quot;</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="classRemove">
+     <property name="geometry">
+      <rect>
+       <x>90</x>
+       <y>50</y>
+       <width>81</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Remove Class</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="classAdd">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>50</y>
+       <width>81</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Add New Class</string>
+     </property>
+    </widget>
+    <widget class="QPushButton" name="classSave">
+     <property name="geometry">
+      <rect>
+       <x>10</x>
+       <y>120</y>
+       <width>161</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Save Classes</string>
      </property>
     </widget>
    </widget>

@@ -23,12 +23,17 @@ public:
 
 private slots:
 
+    void on_classLoad_clicked();
 
+    void on_classSave_clicked();
+
+    void on_classAdd_clicked();
+
+    void on_classRemove_clicked();
+
+    void on_classEnter_editingFinished();
 
     void on_loadImagesButton_clicked();
-
-
-
 
     void on_imageList_itemDoubleClicked(QListWidgetItem *item);
 

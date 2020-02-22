@@ -8,6 +8,11 @@
 #include <QColorSpace>
 #include <QMessageBox>
 #include <QImage>
+#include <QTextStream>
+#include <QDir>
+#include <QStringListModel>
+
+QString GLocation;
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -16,6 +21,10 @@ MainWindow::MainWindow(QWidget *parent)
 {
     setWindowTitle(tr("Labelling Application"));
     ui->setupUi(this);
+
+    ui->classSave->setEnabled(false);
+    ui->classRemove->setEnabled(false);
+    ui->classAdd->setEnabled(false);
 }
 
 
@@ -61,3 +70,99 @@ void MainWindow::on_dateSortButton_clicked()
 {
 
 }
+
+void MainWindow::on_classLoad_clicked()//failed load still opens buttons
+{
+    QString filter ="Text File(*.txt)";
+    QString selectFile = QFileDialog::getOpenFileName(this,"Please Select A Class File","C://",filter);
+    QFile classesFile(selectFile);
+    GLocation = selectFile;
+
+    if(!classesFile.open(QFile::ReadOnly))
+    {
+        QMessageBox::information(0,"Error","File Missing Or Not Selected");
+    }
+
+    else
+    {
+    QStringList textList;
+
+    QTextStream textStream(&classesFile);
+
+    while (true)
+    {
+
+        QString line = textStream.readLine();
+        if (line.isNull())
+            break;
+        else
+            textList.append(line);
+
+    }
+
+    ui->classList->addItems(textList);
+
+    classesFile.close();
+
+    ui->classSave->setEnabled(true);
+    ui->classRemove->setEnabled(true);
+
+    }
+}
+
+
+
+void MainWindow::on_classSave_clicked()
+{
+    QFile saveFile(GLocation);
+
+    if(!saveFile.open(QFile::WriteOnly|QFile::Truncate))
+    {
+        QMessageBox::information(0,"File Loading Failed",saveFile.errorString());
+    }
+
+    QTextStream saveStream(&saveFile);
+    int classCount = ui->classList->count();
+    for(int i = 0; i < classCount; i++)
+    {
+        saveStream << ui->classList->item(i)->text() + "\n";
+  }
+
+     QMessageBox::information(0,"File Saved","File Saved");
+
+    saveFile.close();
+}
+
+void MainWindow::on_classAdd_clicked()
+{
+        ui->classList->addItem(ui->classEnter->text());
+
+}
+
+void MainWindow::on_classRemove_clicked()//https://stackoverflow.com/questions/25417348/remove-selected-items-from-listwidget
+{
+   if (ui->classList->selectedItems().size() !=0)
+   {
+    QList<QListWidgetItem*> items = ui->classList->selectedItems();
+    foreach(QListWidgetItem * item, items)
+    {
+        delete ui->classList->takeItem(ui->classList->row(item));
+    }
+   }
+   else
+   {
+        QMessageBox::information(0,"Error","Please Select A Class To Remove");
+    }
+}
+
+void MainWindow::on_classEnter_editingFinished()
+{
+    QString classInput = ui->classEnter->text();
+     if (classInput == "")
+     {
+         ui->classAdd->setEnabled(false);
+     }
+     else
+         ui->classAdd->setEnabled(true);
+}
+
