@@ -3,20 +3,21 @@
 
 
 
-
-LinkedList::LinkedList()
+LinkedList::LinkedList(void)
 {
     head = NULL;
 }
 
-void LinkedList::InsertionSort(struct node **head_ref)
+
+
+void LinkedList::InsertionSort(struct node **head)
 {
     // Initialize sorted linked list
     struct node *sorted = NULL;
 
     // Traverse the given linked list and insert every
     // node to sorted
-    struct node *current = *head_ref;
+    struct node *current = *head;
     while (current != NULL)
     {
         // Store next for next iteration
@@ -29,26 +30,26 @@ void LinkedList::InsertionSort(struct node **head_ref)
         current = next;
     }
 
-    // Update head_ref to point to sorted linked list
-    *head_ref = sorted;
+    // Update head to point to sorted linked list
+    *head = sorted;
 }
 
 /* function to insert a new_node in a list. Note that this
   function expects a pointer to head_ref as this can modify the
   head of the input linked list (similar to push())*/
-void LinkedList::SortedInsert(struct node** head_ref, struct node* new_node)
+void LinkedList::SortedInsert(struct node** head, struct node* new_node)
 {
     struct node* current;
     /* Special case for the head end */
-    if (*head_ref == NULL || (*head_ref)->data >= new_node->data)
+    if (*head == NULL || (*head)->data >= new_node->data)
     {
-        new_node->next = *head_ref;
-        *head_ref = new_node;
+        new_node->next = *head;
+        *head = new_node;
     }
     else
     {
         /* Locate the node before the point of insertion */
-        current = *head_ref;
+        current = *head;
         while (current->next!=NULL &&
                current->next->data < new_node->data)
         {
@@ -59,7 +60,7 @@ void LinkedList::SortedInsert(struct node** head_ref, struct node* new_node)
     }
 }
 
-node* LinkedList::InsertNode(int index, double x)
+node* LinkedList::InsertNode(int index, QString x)
 {
 
     if (index < 0) return NULL;
@@ -86,7 +87,7 @@ node* LinkedList::InsertNode(int index, double x)
 
 }
 
-int LinkedList::DeleteNode(double x) {
+int LinkedList::DeleteNode(QString x) {
     node* prevNode = NULL;
     node* currNode = head;
     int currIndex = 1;
@@ -109,7 +110,7 @@ int LinkedList::DeleteNode(double x) {
     return 0;
 }
 
-int LinkedList::FindNode(double x) {
+int LinkedList::FindNode(QString x) {
     node* currNode = head;
     int currIndex =	1;
     while (currNode && currNode->data != x) {
@@ -120,14 +121,27 @@ int LinkedList::FindNode(double x) {
     return 0;
 }
 
+QString LinkedList::FindItem(int index)
+{
+    node* currNode = head;
+    int currIndex = 0;
+    while (currIndex != index)
+    {
+        currNode = currNode->next;
+        currIndex++;
+    }
+    return currNode->data;
+}
+
+
 LinkedList::~LinkedList(void) {
    node* currNode = head, *nextNode = NULL;
    while (currNode != NULL)
    {
-    nextNode	=	currNode->next;
+    nextNode = currNode->next;
     // destroy the current node
     delete currNode;
-    currNode	=	nextNode;
+    currNode = nextNode;
    }
 }
 
