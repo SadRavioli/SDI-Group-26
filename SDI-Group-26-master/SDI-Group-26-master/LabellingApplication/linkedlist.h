@@ -3,72 +3,79 @@
 #include <cstddef>
 
 /**
- * @brief
+ * @brief Defines a node to be used.
  *
  */
 struct node
 {
-    int data; /**< TODO: describe */
-    node *next; /**< TODO: describe */
+    QString data; /**< Where information in node is stored. */
+    node *next; /**< Pointer to the next node. */
 };
 
 /**
- * @brief
+ * @brief Defines the linked list class. Can be used to insert, remove, and find items by index or find the index of an item.
  *
  */
 class LinkedList
 {
 private:
-    double data; /**< TODO: describe */
-    node* next; /**< TODO: describe */
-    node* head; /**< TODO: describe */
+    QString data; /**< Stores information. */
+    node* next; /**< Pointer to next node. */
+    node* head; /**< Pointer to head. */
 
 public:
     /**
-     * @brief
+     * @brief Constructor for Linked List.
      *
      */
     LinkedList(void);
     /**
-     * @brief
+     * @brief Destructor for Linked List.
      *
      */
     ~LinkedList(void);
     /**
-     * @brief
+     * @brief Function to sort the Linked List by means of insertion sort.
      *
-     * @param
+     * @param node**
      */
     void InsertionSort(struct node**);
     /**
-     * @brief
+     * @brief Function to insert newly sorted node.
      *
-     * @param
-     * @param
+     * @param node**
+     * @param node*
      */
     void SortedInsert(struct node**, struct node*);
     /**
-     * @brief
+     * @brief Function to insert node into Linked List.
      *
      * @param index
      * @param x
      * @return node
      */
-    node* InsertNode(int index, double x);
+    node* InsertNode(int index, QString x);
     /**
-     * @brief
+     * @brief Finds node that contains x and returns index of said node.
      *
      * @param x
      * @return int
      */
-    int FindNode(double x);
+    int FindNode(QString x);
     /**
-     * @brief
+    * @brief Retrieves item from node with index x
+    *
+    * @param index
+    * @return data
+    */
+    QString FindItem(int index);
+    /**
+     * @brief 
      *
      * @param x
      * @return int
      */
-    int DeleteNode(double x);
+    int DeleteNode(QString x);
 
 };
 
