@@ -1,5 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "linkedlist.h"
+#include "linkedlist.cpp"
 #include <QApplication>
 #include <QFileDialog>
 #include <QImageReader>
@@ -11,9 +13,15 @@
 #include <QTextStream>
 #include <QDir>
 #include <QStringListModel>
+#include <string>
+#include <iostream>
 
 QString GLocation;
+QStringList fileNames;
+QStringList baseNames;
+bool isImage = false;
 
+LinkedList List;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -21,6 +29,8 @@ MainWindow::MainWindow(QWidget *parent)
 {
     setWindowTitle(tr("Labelling Application"));
     ui->setupUi(this);
+
+
 
     ui->classSave->setEnabled(false);
     ui->classRemove->setEnabled(false);
@@ -34,35 +44,56 @@ MainWindow::~MainWindow()
 }
 
 
-QStringList fileNames;
-QStringList baseNames;
 
 
 void MainWindow::on_loadImagesButton_clicked()
 {
+
     fileNames = QFileDialog::getOpenFileNames(this, tr("Open File"),"/path/to/file/",tr("Images (*.png *.tif *.jpg *.jpeg)"));
 
-    QString baseName;
-    for (int i = 0; i < fileNames.size(); i++)
-    {
-        QFileInfo file(fileNames[i]);
-
-        baseName = file.fileName();
-        baseNames.append(baseName);
-        ui->imageList->addItem(baseName);
+    if(fileNames.empty()) {
+        QMessageBox::information(0,"Error","File Missing Or Not Selected");
     }
+    else
+    {
 
+        QString baseName;
+        for (int i = 0; i < fileNames.size(); i++)
+        {
+
+
+
+
+            QFileInfo file(fileNames[i]);
+
+            baseName = file.fileName();
+
+            int itemFound = List.FindNode(fileNames[i]);
+
+            if (itemFound == 0)
+            {
+                List.InsertNode(i, fileNames[i]);
+                baseNames.append(baseName);
+                ui->imageList->addItem(baseName);
+            }
+            else
+            {
+                QMessageBox::information(0,"Error","File Already Exists");
+            }
+        }
+    }
 }
 
 
 
-void MainWindow::on_imageList_itemDoubleClicked(QListWidgetItem *item)
+void MainWindow::on_imageList_itemDoubleClicked()
 {
     int index = ui->imageList->currentRow();
     QImage image;
-    image.load(fileNames[index]);
+    image.load(List.FindItem(index));
     image = image.scaledToHeight(ui->imageDisplay->height(), Qt::SmoothTransformation);
     ui->imageDisplay->setPixmap(QPixmap::fromImage(image));
+    isImage = true;
 }
 
 
@@ -71,10 +102,15 @@ void MainWindow::on_dateSortButton_clicked()
 
 }
 
-void MainWindow::on_classLoad_clicked()
+void MainWindow::on_nameSortButton_clicked()
 {
-    GLocation = "";
 
+}
+
+
+
+void MainWindow::on_classLoad_clicked()//failed load still opens buttons
+{
     QString filter ="Text File(*.txt)";
     QString selectFile = QFileDialog::getOpenFileName(this,"Please Select A Class File","C://",filter);
     QFile classesFile(selectFile);
