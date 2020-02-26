@@ -20,31 +20,23 @@ class MainWindow : public QMainWindow
 
 public:
     /**
-     * @brief
+     * @brief Constructor for the MainWindow class
      *
      * @param parent
      */
     MainWindow(QWidget *parent = nullptr);
     /**
-     * @brief
+     * @brief Destructor for the MainWindow class
      *
      */
     ~MainWindow();
-
-    /**
-     * @brief hello
-     *
-     * @param fileName
-     * @return bool
-     */
-    bool loadFile(const QString &fileName);
 
 
 private slots:
 
     /**
-     * @brief Load File explorer upon clicking button, Once user selects appropriate file the file is read line by line and loaded into listboxWidget
-     * If user does not select or selects the wrong file a dialog will inform the user of the error
+     * @brief Load File explorer upon clicking button, Once user selects appropriate file the file is read line by line and loaded into listboxWidget.
+     * If user does not select or selects the wrong file a dialog will inform the user of the error.
      *
      *
      */
@@ -58,7 +50,7 @@ private slots:
     void on_classSave_clicked();
 
     /**
-     * @brief User inputs a word into the lineEdit and aslong as not blank the Add button becomes available the new class name is appeneded to bottom of the listview
+     * @brief User inputs a word into the lineEdit and aslong as not blank the Add button becomes available the new class name is appeneded to bottom of the listview.
      *
      */
     void on_classAdd_clicked();
@@ -77,44 +69,41 @@ private slots:
 
     /**
      * @brief load class into an QStringList using an iterating loop with a maximum from items run bubble sort function and order the items in alphabetical order.
-     * output a list and update the listview with the sorted values
+     * output a list and update the listview with the sorted values.
      */
     void on_classAsc_clicked();
 
     /**
-     * @brief
-     *
+     * @brief open file explorer for the user to allow them to select multiple images to load into the list widget. Image names are stored in a linked list.
+     * Iterates through list to display image names. Will display error if user tries to load an image more than once.
      *
      */
     void on_loadImagesButton_clicked();
 
-    /*!
-     * @brief
-     *
-     * @param item
+    /**
+     * @brief On double click of the image name in the list widget, the image will be displayed. Uses current row as index.
+     * Scales image to fit the window with smooth transformation function.
      */
-    void on_imageList_itemDoubleClicked(QListWidgetItem *item);
+    void on_imageList_itemDoubleClicked();
 
     /**
-     * @brief
+     * @brief Will sort images by date downloaded.
      *
      */
     void on_dateSortButton_clicked();
-
+    
+    /**
+    * @brief Will sort images alphabetically.
+    *
+    */
+    void MainWindow::on_nameSortButton_clicked()
 
 private:
+    
     /**
-     * @brief
-     *
-     * @param newImage
-     */
-    void setImage(const QImage &newImage);
-
-    QImage image; /**< TODO: describe */
-    QLabel *imageLabel; /**< TODO: describe */
-    QScrollArea *scrollArea; /**< TODO: describe */
-    double scaleFactor = 1; /**< TODO: describe */
-
-    Ui::MainWindow *ui; /**< TODO: describe */
+    * @brief Initialises UI.
+    *
+    */
+    Ui::MainWindow *ui; 
 };
 #endif // MAINWINDOW_H
