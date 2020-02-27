@@ -7,7 +7,7 @@
 #include <QImageReader>
 #include <QMessageBox>
 #include <QLabel>
-#include <QColorSpace>
+//#include <QColorSpace>
 #include <QMessageBox>
 #include <QImage>
 #include <QTextStream>
@@ -102,10 +102,7 @@ void MainWindow::on_dateSortButton_clicked()
 
 }
 
-void MainWindow::on_nameSortButton_clicked()
-{
 
-}
 
 
 
@@ -238,3 +235,8 @@ void MainWindow::on_classAsc_clicked()
 
 }
 
+
+void MainWindow::on_nameSortButton_clicked()
+{
+
+}

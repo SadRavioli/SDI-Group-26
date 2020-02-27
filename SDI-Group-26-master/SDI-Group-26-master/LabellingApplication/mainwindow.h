@@ -96,7 +96,8 @@ private slots:
     * @brief Will sort images alphabetically.
     *
     */
-    void MainWindow::on_nameSortButton_clicked()
+
+    void on_nameSortButton_clicked();
 
 private:
     
