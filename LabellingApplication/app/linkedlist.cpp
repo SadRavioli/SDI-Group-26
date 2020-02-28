@@ -8,8 +8,6 @@ LinkedList::LinkedList(void)
     head = NULL;
 }
 
-
-
 void LinkedList::InsertionSort(struct node **head)
 {
     // Initialize sorted linked list
