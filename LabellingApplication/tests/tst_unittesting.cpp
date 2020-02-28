@@ -1,3 +1,4 @@
+#include "mainwindow.h"
 #include <QtTest>
 
 // add necessary includes here

@@ -1,6 +1,7 @@
 #ifndef LINKEDLIST_H
 #define LINKEDLIST_H
 #include <cstddef>
+#include <QString>
 
 /**
  * @brief Defines a node to be used.
