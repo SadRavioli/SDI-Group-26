@@ -1,10 +1,14 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "rec.h"
+
 #include <QMainWindow>
 #include <QListWidget>
 #include <QLabel>
 #include <QScrollArea>
+#include <rec.h>
+#include <qgraphicsview.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -30,7 +34,6 @@ public:
      *
      */
     ~MainWindow();
-
 
 private slots:
 
@@ -97,14 +100,26 @@ private slots:
     *
     */
 
-    void on_nameSortButton_clicked();
+
+
+
+    void on_btnMoveShape_clicked(bool checked);
+
+    void on_btnAddShape_clicked(bool checked);
+
+    void on_classList_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
 
 private:
-    
+
+    QGraphicsView *view;
+    QGraphicsScene *scene;
+    Rec *rec;
+
     /**
     * @brief Initialises UI.
     *
     */
-    Ui::MainWindow *ui; 
+    Ui::MainWindow *ui;
+
 };
 #endif // MAINWINDOW_H

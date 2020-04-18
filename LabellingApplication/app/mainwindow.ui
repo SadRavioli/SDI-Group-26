@@ -342,7 +342,7 @@
      </item>
      <item>
       <property name="text">
-       <string>Square/Rectangle</string>
+       <string>Rectangle</string>
       </property>
      </item>
      <item>
@@ -372,19 +372,6 @@
      </property>
      <property name="text">
       <string>Shapes:</string>
-     </property>
-    </widget>
-    <widget class="QRadioButton" name="editShapeButton">
-     <property name="geometry">
-      <rect>
-       <x>670</x>
-       <y>10</y>
-       <width>121</width>
-       <height>31</height>
-      </rect>
-     </property>
-     <property name="text">
-      <string>Edit Shape</string>
      </property>
     </widget>
     <widget class="QPushButton" name="helpButton">
@@ -439,12 +426,71 @@
       <string>Crop/Save</string>
      </property>
     </widget>
+    <widget class="QGroupBox" name="groupBox_6">
+     <property name="geometry">
+      <rect>
+       <x>650</x>
+       <y>0</y>
+       <width>181</width>
+       <height>41</height>
+      </rect>
+     </property>
+     <property name="title">
+      <string>GroupBox</string>
+     </property>
+     <widget class="QRadioButton" name="btnAddShape">
+      <property name="geometry">
+       <rect>
+        <x>10</x>
+        <y>10</y>
+        <width>82</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Draw Shape</string>
+      </property>
+     </widget>
+     <widget class="QRadioButton" name="btnMoveShape">
+      <property name="geometry">
+       <rect>
+        <x>90</x>
+        <y>10</y>
+        <width>81</width>
+        <height>31</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Move Shape</string>
+      </property>
+     </widget>
+    </widget>
+   </widget>
+   <widget class="QGraphicsView" name="graphicsView">
+    <property name="geometry">
+     <rect>
+      <x>10</x>
+      <y>210</y>
+      <width>1901</width>
+      <height>841</height>
+     </rect>
+    </property>
+    <property name="autoFillBackground">
+     <bool>false</bool>
+    </property>
+    <property name="verticalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
+    <property name="horizontalScrollBarPolicy">
+     <enum>Qt::ScrollBarAlwaysOff</enum>
+    </property>
    </widget>
    <zorder>groupBox_2</zorder>
    <zorder>groupBox</zorder>
    <zorder>groupBox_3</zorder>
    <zorder>imageDisplay</zorder>
    <zorder>groupBox_4</zorder>
+   <zorder>graphicsView</zorder>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>

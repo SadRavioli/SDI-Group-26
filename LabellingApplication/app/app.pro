@@ -18,11 +18,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
     linkedlist.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    rec.cpp
 
 HEADERS += \
     linkedlist.h \
-    mainwindow.h
+    mainwindow.h \
+    rec.h
 
 FORMS += \
     mainwindow.ui

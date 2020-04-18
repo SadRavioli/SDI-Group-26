@@ -28,9 +28,11 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     setWindowTitle(tr("Labelling Application"));
+
     ui->setupUi(this);
-
-
+    rec = new Rec(this);
+    view = new QGraphicsView(rec);
+    ui->graphicsView->setScene(rec);// these four lines COPY
 
     ui->classSave->setEnabled(false);
     ui->classRemove->setEnabled(false);
@@ -42,8 +44,6 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
-
-
 
 
 void MainWindow::on_loadImagesButton_clicked()
@@ -60,9 +60,6 @@ void MainWindow::on_loadImagesButton_clicked()
         QString baseName;
         for (int i = 0; i < fileNames.size(); i++)
         {
-
-
-
 
             QFileInfo file(fileNames[i]);
 
@@ -91,6 +88,11 @@ void MainWindow::on_imageList_itemDoubleClicked()
     int index = ui->imageList->currentRow();
     QImage image;
     image.load(List.FindItem(index));
+    QGraphicsScene *scene = new QGraphicsScene();
+    QPixmap m("/Users/Daleh/Pictures/test.jpg");
+    scene->setBackgroundBrush(m.scaled(100,100,Qt::IgnoreAspectRatio,Qt::SmoothTransformation));
+    ui->graphicsView->setScene(scene);
+
     image = image.scaledToHeight(ui->imageDisplay->height(), Qt::SmoothTransformation);
     ui->imageDisplay->setPixmap(QPixmap::fromImage(image));
     isImage = true;
@@ -101,10 +103,6 @@ void MainWindow::on_dateSortButton_clicked()
 {
 
 }
-
-
-
-
 
 void MainWindow::on_classLoad_clicked()//failed load still opens buttons
 {
@@ -235,8 +233,25 @@ void MainWindow::on_classAsc_clicked()
 
 }
 
-
-void MainWindow::on_nameSortButton_clicked()
+void MainWindow::on_btnAddShape_clicked(bool checked)
 {
+    if (checked == true)
+    {
+        rec->setMode(Rec::Mode(int(Rec::DrawRec)));
 
+    }
+}
+
+void MainWindow::on_btnMoveShape_clicked(bool checked)
+{
+    if (checked == true)
+    {
+        rec->setMode(Rec::Mode(int(Rec::SelectObject)));
+    }
+}
+
+
+void MainWindow::on_classList_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous)
+{
+    rec->ClassName = ui->classList->currentItem()->text();
 }
