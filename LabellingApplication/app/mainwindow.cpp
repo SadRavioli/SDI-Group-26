@@ -2,12 +2,13 @@
 #include "ui_mainwindow.h"
 #include "linkedlist.h"
 #include "linkedlist.cpp"
+#include "binarytree.h"
 #include <QApplication>
 #include <QFileDialog>
 #include <QImageReader>
 #include <QMessageBox>
 #include <QLabel>
-//#include <QColorSpace>
+#include <QColorSpace>
 #include <QMessageBox>
 #include <QImage>
 #include <QTextStream>
@@ -15,24 +16,24 @@
 #include <QStringListModel>
 #include <string>
 #include <iostream>
+#include <QGraphicsScene>
+#include <iostream>
 
-QString GLocation;
-QStringList fileNames;
-QStringList baseNames;
-bool isImage = false;
 
-LinkedList List;
+BinaryTree Tree;
+
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     setWindowTitle(tr("Labelling Application"));
-
     ui->setupUi(this);
+
     rec = new Rec(this);
     view = new QGraphicsView(rec);
     ui->graphicsView->setScene(rec);// these four lines COPY
+    ui->graphicsView->setStyleSheet("background: transparent");
 
     ui->classSave->setEnabled(false);
     ui->classRemove->setEnabled(false);
@@ -45,38 +46,38 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
 void MainWindow::on_loadImagesButton_clicked()
 {
+    for (int z = 0; z < fileNames.size(); z++)
+    {
+        Tree.remove(fileNames[z]);
+    }
+    fileNames.clear();
+    baseNames.clear();
 
     fileNames = QFileDialog::getOpenFileNames(this, tr("Open File"),"/path/to/file/",tr("Images (*.png *.tif *.jpg *.jpeg)"));
 
     if(fileNames.empty()) {
-        QMessageBox::information(0,"Error","File Missing Or Not Selected");
+        QMessageBox::information(0,"Error", "File Missing Or Not Selected");
     }
     else
     {
+        ui->imageList->clear();
 
-        QString baseName;
         for (int i = 0; i < fileNames.size(); i++)
         {
-
             QFileInfo file(fileNames[i]);
 
             baseName = file.fileName();
 
-            int itemFound = List.FindNode(fileNames[i]);
+            fileCreatedAt = file.created().toString();
 
-            if (itemFound == 0)
-            {
-                List.InsertNode(i, fileNames[i]);
-                baseNames.append(baseName);
-                ui->imageList->addItem(baseName);
-            }
-            else
-            {
-                QMessageBox::information(0,"Error","File Already Exists");
-            }
+
+            Tree.insertNode(fileNames[i], fileCreatedAt);
+            baseNames.append(baseName);
+            dateNameList.append(baseName);
+            dateList.append(fileCreatedAt);
+            ui->imageList->addItem(baseName);
         }
     }
 }
@@ -85,24 +86,107 @@ void MainWindow::on_loadImagesButton_clicked()
 
 void MainWindow::on_imageList_itemDoubleClicked()
 {
-    int index = ui->imageList->currentRow();
+    QStringList imageList;
     QImage image;
-    image.load(List.FindItem(index));
-    QGraphicsScene *scene = new QGraphicsScene();
-    QPixmap m("/Users/Daleh/Pictures/test.jpg");
-    scene->setBackgroundBrush(m.scaled(100,100,Qt::IgnoreAspectRatio,Qt::SmoothTransformation));
-    ui->graphicsView->setScene(scene);
+
+    int index = ui->imageList->currentRow();
+
+    if (!buttonType)
+    {
+        if (nameClicked)
+            Tree.showNodeInReverseOrder();
+
+
+        if (!nameClicked)
+            Tree.showNodeInOrder();
+
+        imageList = Tree.returnTraversal();
+
+    }
+    if (buttonType)
+    {
+        imageList.append(fileNames);
+        if (dateClicked)
+            index = fileNames.size() - (index + 1);
+    }
+
+    image.load(imageList[index]);
+
 
     image = image.scaledToHeight(ui->imageDisplay->height(), Qt::SmoothTransformation);
     ui->imageDisplay->setPixmap(QPixmap::fromImage(image));
+
     isImage = true;
 }
 
 
+void MainWindow::on_nameSortButton_clicked()
+{
+    buttonType = false;
+
+    ui->imageList->clear();
+    if (!nameClicked)
+    {
+        nameClicked = true;
+        for (int a = baseNames.size(); a --> 0; )
+        {
+            ui->imageList->addItem(baseNames[a]);
+        }
+    }
+    else
+    {
+        nameClicked = false;
+        for (int b = 0; b < baseNames.size(); b++)
+        {
+            ui->imageList->addItem(baseNames[b]);
+        }
+    }
+}
+
+
+
 void MainWindow::on_dateSortButton_clicked()
 {
+    buttonType = true;
 
+    ui->imageList->clear();
+
+    if (!dateClicked) {
+        dateClicked = true;
+        for (int c = 0; c < dateList.size() - 1; c++)
+        for (int d = 0; d < dateList.size() - d - 1; d++)
+        {
+            if (dateList[d] > dateList[d+1])
+                swap(&dateList[d], &dateList[d+1]);
+                swap(&dateNameList[d], &dateNameList[d+1]);
+                swap(&fileNames[d], &fileNames[d+1]);
+        }
+        for (int e = dateNameList.size(); e --> 0; )
+        {
+            ui->imageList->addItem(dateNameList[e]);
+        }
+    }
+    else
+    {
+        dateClicked = false;
+        for (int c = 0; c < dateList.size() - 1; c++)
+        for (int d = 0; d < dateList.size() - d - 1; d++)
+        {
+            if (dateList[d] > dateList[d+1])
+                swap(&dateList[d], &dateList[d+1]);
+                swap(&dateNameList[d], &dateNameList[d+1]);
+                swap(&fileNames[d], &fileNames[d+1]);
+        }
+        for (int e = 0; e < dateNameList.size(); e++)
+        {
+            ui->imageList->addItem(dateNameList[e]);
+        }
+    }
 }
+
+
+
+
 
 void MainWindow::on_classLoad_clicked()//failed load still opens buttons
 {
@@ -233,7 +317,10 @@ void MainWindow::on_classAsc_clicked()
 
 }
 
-void MainWindow::on_btnAddShape_clicked(bool checked)
+
+
+
+void MainWindow::on_drawShape_clicked(bool checked)
 {
     if (checked == true)
     {
@@ -242,14 +329,13 @@ void MainWindow::on_btnAddShape_clicked(bool checked)
     }
 }
 
-void MainWindow::on_btnMoveShape_clicked(bool checked)
+void MainWindow::on_moveShape_clicked(bool checked)
 {
     if (checked == true)
     {
         rec->setMode(Rec::Mode(int(Rec::SelectObject)));
     }
 }
-
 
 void MainWindow::on_classList_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous)
 {

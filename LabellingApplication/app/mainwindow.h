@@ -7,8 +7,7 @@
 #include <QListWidget>
 #include <QLabel>
 #include <QScrollArea>
-#include <rec.h>
-#include <qgraphicsview.h>
+#include <QtCore/QDateTime>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -23,6 +22,10 @@ class MainWindow : public QMainWindow
     Q_OBJECT
 
 public:
+
+
+
+
     /**
      * @brief Constructor for the MainWindow class
      *
@@ -34,6 +37,7 @@ public:
      *
      */
     ~MainWindow();
+
 
 private slots:
 
@@ -100,26 +104,43 @@ private slots:
     *
     */
 
+    void on_nameSortButton_clicked();
 
+    void on_drawShape_clicked(bool);
 
-
-    void on_btnMoveShape_clicked(bool checked);
-
-    void on_btnAddShape_clicked(bool checked);
+    void on_moveShape_clicked(bool);
 
     void on_classList_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
 
 private:
-
+    
     QGraphicsView *view;
     QGraphicsScene *scene;
     Rec *rec;
+    QString GLocation;
+    QStringList fileNames;
+    QStringList baseNames;
+    QString baseName;
+    QStringList dateList;
+    QStringList dateNameList;
+    QString fileCreatedAt;
+
+    bool isImage = false;
+    bool nameClicked;
+    bool dateClicked;
+    bool buttonType;
+
+    void swap(QString *xp, QString *yp)
+    {
+        QString temp = *xp;
+        *xp = *yp;
+        *yp = temp;
+    }
 
     /**
     * @brief Initialises UI.
     *
     */
-    Ui::MainWindow *ui;
-
+    Ui::MainWindow *ui; 
 };
 #endif // MAINWINDOW_H
