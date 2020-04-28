@@ -11,6 +11,10 @@
 #include <QGraphicsView>
 #include <QList>
 #include <QKeyEvent>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QString>
+#include <QVariant>
 
 class Rec : public QGraphicsScene
 {
@@ -19,11 +23,14 @@ public:
     Rec(QObject* parent = 0);
     void setMode(Mode mode);
     QString ClassName;
+
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
     void keyPressEvent(QKeyEvent *event);
+    void saveJson(QString fileName);
+
 private:
     Mode sceneMode;
     QPointF origPoint;

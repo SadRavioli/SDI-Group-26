@@ -81,12 +81,31 @@ void Rec::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 }
 
 void Rec::keyPressEvent(QKeyEvent *event){
+
+
     if(event->key() == Qt::Key_Delete)
-        foreach(QGraphicsItem* item, selectedItems()){
-            removeItem(item);
-            delete item;
+        foreach(QGraphicsItem* item, items()){
+            QJsonObject recordObject;
+            recordObject.insert("FirstName", item);
+
+
         }
 
-    else
-        QGraphicsScene::keyPressEvent(event);
 }
+
+void saveJson(QString fileName) {
+
+
+
+    QJsonObject recordObject;
+    recordObject.insert("FirstName", QJsonValue::fromVariant(1));
+    recordObject.insert("LastName", QJsonValue::fromVariant("Doe"));
+    recordObject.insert("Age", QJsonValue::fromVariant(43));
+
+    QJsonDocument doc(recordObject);
+
+    QFile jsonFile(fileName);
+    jsonFile.open(QFile::WriteOnly);
+    jsonFile.write(doc.toJson());
+}
+

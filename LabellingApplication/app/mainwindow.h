@@ -104,6 +104,13 @@ private slots:
     *
     */
 
+    void on_saveYOLOButton_clicked();
+
+    /**
+    * @brief Will save to json file
+    *
+    */
+
     void on_nameSortButton_clicked();
 
     void on_drawShape_clicked(bool);
@@ -111,8 +118,6 @@ private slots:
     void on_moveShape_clicked(bool);
 
     void on_classList_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
-
-    void on_helpButton_clicked();
 
 private:
     

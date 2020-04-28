@@ -17,7 +17,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     binarytree.cpp \
-    helpwindow.cpp \
     linkedlist.cpp \
     main.cpp \
     mainwindow.cpp \
@@ -25,13 +24,11 @@ SOURCES += \
 
 HEADERS += \
     binarytree.h \
-    helpwindow.h \
     linkedlist.h \
     mainwindow.h \
     rec.h
 
 FORMS += \
-    helpwindow.ui \
     mainwindow.ui
 
 # Default rules for deployment.
@@ -43,4 +40,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 SUBDIRS = \
     app \
     tests
+
+DISTFILES += \
+    Jsonfile.js \
+    Jsonfile2.java \
+    test.json
 

@@ -3,7 +3,6 @@
 #include "linkedlist.h"
 #include "linkedlist.cpp"
 #include "binarytree.h"
-#include "helpwindow.h"
 #include <QApplication>
 #include <QFileDialog>
 #include <QImageReader>
@@ -28,9 +27,9 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-
-    ui->setupUi(this);
     setWindowTitle(tr("Labelling Application"));
+    ui->setupUi(this);
+
     rec = new Rec(this);
     view = new QGraphicsView(rec);
     ui->graphicsView->setScene(rec);// these four lines COPY
@@ -343,9 +342,20 @@ void MainWindow::on_classList_currentItemChanged(QListWidgetItem *current, QList
     rec->ClassName = ui->classList->currentItem()->text();
 }
 
-void MainWindow::on_helpButton_clicked()
+void MainWindow::on_saveYOLOButton_clicked()
 {
-    helpwindow helpWindow;
-    helpWindow.setModal(true);
-    helpWindow.exec();
+    QJsonObject recordObject;
+    recordObject.insert("FirstName", QJsonValue::fromVariant(1));
+    recordObject.insert("LastName", QJsonValue::fromVariant("Doe"));
+    recordObject.insert("Age", QJsonValue::fromVariant(43));
+
+
+
+
+    QJsonDocument doc(recordObject);
+
+    QFile jsonFile("test.json");
+    jsonFile.open(QFile::WriteOnly);
+    jsonFile.write(doc.toJson());
+
 }
