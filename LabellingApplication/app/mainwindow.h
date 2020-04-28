@@ -112,6 +112,8 @@ private slots:
 
     void on_classList_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
 
+    void on_helpButton_clicked();
+
 private:
     
     QGraphicsView *view;

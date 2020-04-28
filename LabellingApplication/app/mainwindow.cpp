@@ -3,6 +3,7 @@
 #include "linkedlist.h"
 #include "linkedlist.cpp"
 #include "binarytree.h"
+#include "helpwindow.h"
 #include <QApplication>
 #include <QFileDialog>
 #include <QImageReader>
@@ -27,9 +28,9 @@ MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
-    setWindowTitle(tr("Labelling Application"));
-    ui->setupUi(this);
 
+    ui->setupUi(this);
+    setWindowTitle(tr("Labelling Application"));
     rec = new Rec(this);
     view = new QGraphicsView(rec);
     ui->graphicsView->setScene(rec);// these four lines COPY
@@ -340,4 +341,11 @@ void MainWindow::on_moveShape_clicked(bool checked)
 void MainWindow::on_classList_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous)
 {
     rec->ClassName = ui->classList->currentItem()->text();
+}
+
+void MainWindow::on_helpButton_clicked()
+{
+    helpwindow helpWindow;
+    helpWindow.setModal(true);
+    helpWindow.exec();
 }
