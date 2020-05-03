@@ -16,7 +16,7 @@ namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
 /**
- * @brief
+ * @brief Holds all UI elements and handles user input
  *
  */
 class MainWindow : public QMainWindow
@@ -146,7 +146,18 @@ private slots:
     */
     void on_restoreButton_clicked();
 
+    /**
+    * @brief Produce the help screen
+    *
+    */
+
     void on_helpButton_clicked();
+
+    /**
+    * @brief Call copy paste function to copy and paste selected shape
+    *
+    */
+    void on_copyButton_clicked();
 
 private:
     
@@ -156,6 +167,7 @@ private:
     QString GLocation;
     QStringList fileNames;
     QStringList baseNames;
+    QStringList classBaseNames;
     QString baseName;
     QStringList dateList;
     QStringList dateNameList;

@@ -18,6 +18,10 @@
 #include <QFileDialog>
 #include <QVariant>
 
+/**
+* @brief Draw, Move, Save ,Load Boxes and annotations
+*
+*/
 class Rec : public QGraphicsScene
 {
 public:
@@ -44,7 +48,12 @@ public:
     */
     void readJson(QString Load);
 
+    /**
+    * @brief Copy selected item by storing data into variables and draw it at same postion of the selected box.
+    *
+    */
 
+    void copyPaste();
 protected:
     /**
     * @brief get mouses starting position when clicked
@@ -71,6 +80,7 @@ protected:
     *
     */
     void drawJson(int x,int y,int Height,int Width,QString annotation);
+
 
 private:
     Mode sceneMode;

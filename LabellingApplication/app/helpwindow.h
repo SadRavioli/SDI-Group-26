@@ -4,6 +4,10 @@
 #include <QDialog>
 
 namespace Ui {
+/**
+* @brief Launch the help window
+*
+*/
 class helpwindow;
 }
 

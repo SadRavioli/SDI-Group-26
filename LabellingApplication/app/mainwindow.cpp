@@ -28,23 +28,19 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     setWindowTitle(tr("Labelling Application"));
-    ui->setupUi(this);
 
+    //setup qgraphics view and scene for painting.
+    ui->setupUi(this);
     rec = new Rec(this);
-    //view = new QGraphicsView(rec);
-    //view->setSceneRect(yourScene->sceneRect())
-    ui->graphicsView->setScene(rec);// these four lines COPY
+    ui->graphicsView->setScene(rec);
     ui->graphicsView->setStyleSheet("background: transparent");
 
+    //blank out some sections to avoid crashes.
     ui->classSave->setEnabled(false);
     ui->classRemove->setEnabled(false);
     ui->classAdd->setEnabled(false);
     ui->loadButton->setEnabled(false);
     ui->saveButton->setEnabled(false);
-
-    //ui->graphicsView->setHorizontalScrollBarPolicy ( Qt::ScrollBarAlwaysOff );
-    //ui->graphicsView->setVerticalScrollBarPolicy ( Qt::ScrollBarAlwaysOff );
-    //ui->graphicsView->setSceneRect(rec->sceneRect());
 }
 
 
@@ -79,7 +75,7 @@ void MainWindow::on_loadImagesButton_clicked()
 
             fileCreatedAt = file.created().toString();
 
-
+            //place values in binary tree and arrays for sorting.
             Tree.insertNode(fileNames[i], fileCreatedAt);
             baseNames.append(baseName);
             dateNameList.append(baseName);
@@ -90,6 +86,46 @@ void MainWindow::on_loadImagesButton_clicked()
 }
 
 
+
+void MainWindow::on_nameSortButton_clicked()
+{
+    buttonType = false;
+
+    ui->imageList->clear();
+    if (!nameClicked) {
+        nameClicked = true;
+        for (int c = 0; c < baseNames.size(); c++)
+            for (int d = 0; d < baseNames.size() - 1; d++)
+            {
+                if (baseNames[d] > baseNames[d+1])
+                {
+                QString const temp = baseNames[d];
+                baseNames[d] = baseNames[d+1];
+                baseNames[d+1] = temp;
+                }
+
+        }
+        for (int e = baseNames.size(); e --> 0; )
+        {
+            ui->imageList->addItem(baseNames[e]);
+        }
+    }
+    else
+    {
+        nameClicked = false;
+        for (int c = 0; c < baseNames.size() - 1; c++)
+        for (int d = 0; d < baseNames.size() - d - 1; d++)
+        {
+            if (baseNames[d] > baseNames[d+1])
+                swap(&baseNames[d], &baseNames[d+1]);
+        }
+        for (int e = 0; e < baseNames.size(); e++)
+        {
+            ui->imageList->addItem(baseNames[e]);
+        }
+    }
+    baseNames.empty();
+}
 
 void MainWindow::on_imageList_itemDoubleClicked()
 {
@@ -126,35 +162,10 @@ void MainWindow::on_imageList_itemDoubleClicked()
     isImage = true;
     ui->saveButton->setEnabled(true);
     ui->loadButton->setEnabled(true);
+    rec->clearRec();
 }
 
-
-void MainWindow::on_nameSortButton_clicked()
-{
-    buttonType = false;
-
-    ui->imageList->clear();
-    if (!nameClicked)
-    {
-        nameClicked = true;
-        for (int a = baseNames.size(); a --> 0; )
-        {
-            ui->imageList->addItem(baseNames[a]);
-        }
-    }
-    else
-    {
-        nameClicked = false;
-        for (int b = 0; b < baseNames.size(); b++)
-        {
-            ui->imageList->addItem(baseNames[b]);
-        }
-    }
-}
-
-
-
-void MainWindow::on_dateSortButton_clicked()
+void MainWindow::on_dateSortButton_clicked()//bubble sort based on the dates on which the images where added to the computer
 {
     buttonType = true;
 
@@ -186,6 +197,7 @@ void MainWindow::on_dateSortButton_clicked()
                 swap(&dateNameList[d], &dateNameList[d+1]);
                 swap(&fileNames[d], &fileNames[d+1]);
         }
+        //add sorted list to qlist box.
         for (int e = 0; e < dateNameList.size(); e++)
         {
             ui->imageList->addItem(dateNameList[e]);
@@ -193,16 +205,13 @@ void MainWindow::on_dateSortButton_clicked()
     }
 }
 
-
-
-
-
 void MainWindow::on_classLoad_clicked()//failed load still opens buttons
 {
-
+    //open windows file diolouge and set it to open.
     QString filter ="Text File(*.txt)";
     QString selectFile = QFileDialog::getOpenFileName(this,"Please Select A Class File","C://",filter);
     QFile classesFile(selectFile);
+
     GLocation = selectFile;
 
     if(!classesFile.open(QFile::ReadOnly))
@@ -212,10 +221,10 @@ void MainWindow::on_classLoad_clicked()//failed load still opens buttons
 
     else
     {
-    QStringList textList;
+        QStringList textList;
 
-    QTextStream textStream(&classesFile);
-
+        QTextStream textStream(&classesFile);
+    //run through line by line to selected document
     while (true)
     {
 
@@ -227,19 +236,26 @@ void MainWindow::on_classLoad_clicked()//failed load still opens buttons
 
     }
 
-    ui->classList->addItems(textList);
+    //iterate through the newly created list and add to binary tree and display
+    for (int i = 0; i < textList.size(); i++)
+    {
+        baseName = textList[i];
+        Tree.insertNode(textList[i], fileCreatedAt);
+        classBaseNames.append(baseName);
+        ui->classList->addItem(baseName);
+    }
 
     classesFile.close();
 
+    //allow access to buttons
     ui->classSave->setEnabled(true);
     ui->classRemove->setEnabled(true);
 
     }
+
 }
 
-
-
-void MainWindow::on_classSave_clicked()
+void MainWindow::on_classSave_clicked()//iterate through qlistboxitem for each item, and store them to the already opened global file.
 {
     QFile saveFile(GLocation);
 
@@ -247,7 +263,7 @@ void MainWindow::on_classSave_clicked()
     {
         QMessageBox::information(0,"File Loading Failed",saveFile.errorString());
     }
-
+    //save items through iteration into new file
     QTextStream saveStream(&saveFile);
     int classCount = ui->classList->count();
     for(int i = 0; i < classCount; i++)
@@ -260,13 +276,14 @@ void MainWindow::on_classSave_clicked()
     saveFile.close();
 }
 
-void MainWindow::on_classAdd_clicked()
+void MainWindow::on_classAdd_clicked()//add classnames to sorting list and add new item to list from textbox
 {
         ui->classList->addItem(ui->classEnter->text());
+        classBaseNames.append(ui->classEnter->text());
 
 }
 
-void MainWindow::on_classRemove_clicked()//https://stackoverflow.com/questions/25417348/remove-selected-items-from-listwidget
+void MainWindow::on_classRemove_clicked()//remove, current selected item when button is clicked
 {
    if (ui->classList->selectedItems().size() !=0)
    {
@@ -284,6 +301,7 @@ void MainWindow::on_classRemove_clicked()//https://stackoverflow.com/questions/2
 
 void MainWindow::on_classEnter_editingFinished()
 {
+    //allows the input of a file if text field is entered.
     QString classInput = ui->classEnter->text();
      if (classInput == "")
      {
@@ -293,42 +311,50 @@ void MainWindow::on_classEnter_editingFinished()
          ui->classAdd->setEnabled(true);
 }
 
-QStringList bubbleSort(QStringList List, int Count )
+void MainWindow::on_classAsc_clicked()//bubble sort for both ascending and descending alphabetical order. once the button is clicked set
+                                      //nameclicked to false to prep reverse
 {
-    for( int i=1; i< Count ;i++ )
-    {
-        for( int j=0; j<Count-1; j++)
-        {
-            if(List[j] > List[j+1])
-            {
-                QString const temp = List[j];
-                List[j] = List[j+1];
-                List[j+1] = temp;
-
-            }
-
-        }
-    }
-    return List;
-}
-
-void MainWindow::on_classAsc_clicked()
-{
-    QStringList SortList;
-    int classCount = ui->classList->count();
-
-    for (int i = 0; i < classCount; ++i)
-        SortList.append(ui->classList->item(i)->text());
-
-    QStringList Output = bubbleSort(SortList,classCount);
+    buttonType = true;
 
     ui->classList->clear();
-    ui->classList->addItems(Output);
 
+    if (!nameClicked) {
+        nameClicked = true;
+        for (int c = 0; c < classBaseNames.size(); c++)
+            for (int d = 0; d < classBaseNames.size() - 1; d++)
+            {
+                if (classBaseNames[d] > classBaseNames[d+1])
+                {
+                QString const temp = classBaseNames[d];
+                classBaseNames[d] = classBaseNames[d+1];
+                classBaseNames[d+1] = temp;
+                }
+
+        }
+        for (int e = classBaseNames.size(); e --> 0; )
+        {
+            ui->classList->addItem(classBaseNames[e]);
+        }
+    }
+    else
+    {
+        nameClicked = false;
+        for (int c = 0; c < classBaseNames.size() - 1; c++)
+        for (int d = 0; d < classBaseNames.size() - d - 1; d++)
+        {
+            if (classBaseNames[d] > classBaseNames[d+1])
+                swap(&classBaseNames[d], &classBaseNames[d+1]);
+        }
+        for (int e = 0; e < classBaseNames.size(); e++)
+        {
+            ui->classList->addItem(classBaseNames[e]);
+        }
+    }
 }
 
 void MainWindow::on_drawShape_clicked(bool checked)
 {
+    //set mode for draw on button click
     if (checked == true)
     {
         rec->setMode(Rec::Mode(int(Rec::DrawRec)));
@@ -338,11 +364,14 @@ void MainWindow::on_drawShape_clicked(bool checked)
 
 void MainWindow::on_moveShape_clicked(bool checked)
 {
+    //set mode for move and select on button click
     if (checked == true)
     {
         rec->setMode(Rec::Mode(int(Rec::SelectObject)));
     }
 }
+
+
 
 void MainWindow::on_classList_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous)
 {
@@ -351,25 +380,33 @@ void MainWindow::on_classList_currentItemChanged(QListWidgetItem *current, QList
 
 void MainWindow::on_saveButton_clicked()
 {
+    //pass file location through to allow the file to save to that new location
     QString Save = QFileDialog::getSaveFileName(this,tr("Please Name And Select Location"),tr("C://*.annotations"));
     rec->saveJson(Save, ui->imageList->currentItem()->text());
 }
 
 void MainWindow::on_loadButton_clicked()
 {
+    //pass file location through to allow the file to read
     QString Load = QFileDialog::getOpenFileName(this,tr("Please Choose an Annotation File"),tr("C://*.annotations"));
     rec->readJson(Load);
 }
 
-void MainWindow::on_restoreButton_clicked()
+void MainWindow::on_restoreButton_clicked()//call clear rec function to remove all items on scene
 {
     rec->clearRec();
 }
 
 
-void MainWindow::on_helpButton_clicked()
+void MainWindow::on_helpButton_clicked()//open help window ontop of screen
 {
     helpwindow helpWindow;
     helpWindow.setModal(true);
     helpWindow.exec();
 }
+
+void MainWindow::on_copyButton_clicked()//call rec function to copy paste shapes
+{
+    rec->copyPaste();
+}
+
