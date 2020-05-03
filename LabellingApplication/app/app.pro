@@ -17,20 +17,19 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     binarytree.cpp \
-    linkedlist.cpp \
+    helpwindow.cpp \
     main.cpp \
     mainwindow.cpp \
-    rec.cpp \
-    thread.cpp
+    rec.cpp
 
 HEADERS += \
     binarytree.h \
-    linkedlist.h \
+    helpwindow.h \
     mainwindow.h \
-    rec.h \
-    thread.h
+    rec.h
 
 FORMS += \
+    helpwindow.ui \
     mainwindow.ui
 
 # Default rules for deployment.

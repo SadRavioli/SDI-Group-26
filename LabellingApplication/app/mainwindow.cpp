@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-#include "linkedlist.h"
-#include "linkedlist.cpp"
+#include "ui_helpwindow.h"
+#include "helpwindow.h"
 #include "binarytree.h"
 #include <QApplication>
 #include <QFileDialog>
@@ -364,4 +364,12 @@ void MainWindow::on_loadButton_clicked()
 void MainWindow::on_restoreButton_clicked()
 {
     rec->clearRec();
+}
+
+
+void MainWindow::on_helpButton_clicked()
+{
+    helpwindow helpWindow;
+    helpWindow.setModal(true);
+    helpWindow.exec();
 }

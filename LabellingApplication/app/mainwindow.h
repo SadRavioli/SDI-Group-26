@@ -146,6 +146,8 @@ private slots:
     */
     void on_restoreButton_clicked();
 
+    void on_helpButton_clicked();
+
 private:
     
     QGraphicsView *view;
