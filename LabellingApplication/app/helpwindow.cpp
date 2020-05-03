@@ -11,5 +11,5 @@ helpwindow::helpwindow(QWidget *parent) :
 
 helpwindow::~helpwindow()
 {
-    delete ui;
+    delete ui; 
 }
