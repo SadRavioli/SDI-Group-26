@@ -16,7 +16,7 @@ public:
     ~helpwindow();
 
 private:
-    Ui::helpwindow *ui;
+    Ui::helpwindow *ui; 
 };
 
 #endif // HELPWINDOW_H
