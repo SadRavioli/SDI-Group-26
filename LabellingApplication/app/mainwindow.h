@@ -115,14 +115,35 @@ private slots:
 
     void on_nameSortButton_clicked();
 
+    /**
+    * @brief Radio Button which when enabled allows the user to draw a shape to QgraphicsScene
+    *
+    */
     void on_drawShape_clicked(bool);
 
+    /**
+    * @brief Radio Button which when enabled allows the user to move items around the QgraphicsScene with mouse
+    *
+    */
     void on_moveShape_clicked(bool);
 
+
+    /**
+    * @brief Used to get the current class name the user has selected from the list.
+    *
+    */
     void on_classList_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
 
+    /**
+    * @brief Call REC Loading function that reads selected .annotations file and draws the contained shapes back onto the image.
+    *
+    */
     void on_loadButton_clicked();
 
+    /**
+    * @brief Button to clear all items on qgraphicsscene
+    *
+    */
     void on_restoreButton_clicked();
 
 private:
