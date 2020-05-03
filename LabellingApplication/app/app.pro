@@ -20,13 +20,15 @@ SOURCES += \
     linkedlist.cpp \
     main.cpp \
     mainwindow.cpp \
-    rec.cpp
+    rec.cpp \
+    thread.cpp
 
 HEADERS += \
     binarytree.h \
     linkedlist.h \
     mainwindow.h \
-    rec.h
+    rec.h \
+    thread.h
 
 FORMS += \
     mainwindow.ui

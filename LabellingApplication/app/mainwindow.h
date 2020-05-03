@@ -3,11 +3,13 @@
 
 #include "rec.h"
 
+
 #include <QMainWindow>
 #include <QListWidget>
 #include <QLabel>
 #include <QScrollArea>
 #include <QtCore/QDateTime>
+
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -104,7 +106,7 @@ private slots:
     *
     */
 
-    void on_saveYOLOButton_clicked();
+    void on_saveButton_clicked();
 
     /**
     * @brief Will save to json file
@@ -118,6 +120,10 @@ private slots:
     void on_moveShape_clicked(bool);
 
     void on_classList_currentItemChanged(QListWidgetItem *current, QListWidgetItem *previous);
+
+    void on_loadButton_clicked();
+
+    void on_restoreButton_clicked();
 
 private:
     

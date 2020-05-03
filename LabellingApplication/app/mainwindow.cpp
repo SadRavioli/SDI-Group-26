@@ -31,13 +31,20 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     rec = new Rec(this);
-    view = new QGraphicsView(rec);
+    //view = new QGraphicsView(rec);
+    //view->setSceneRect(yourScene->sceneRect())
     ui->graphicsView->setScene(rec);// these four lines COPY
     ui->graphicsView->setStyleSheet("background: transparent");
 
     ui->classSave->setEnabled(false);
     ui->classRemove->setEnabled(false);
     ui->classAdd->setEnabled(false);
+    ui->loadButton->setEnabled(false);
+    ui->saveButton->setEnabled(false);
+
+    //ui->graphicsView->setHorizontalScrollBarPolicy ( Qt::ScrollBarAlwaysOff );
+    //ui->graphicsView->setVerticalScrollBarPolicy ( Qt::ScrollBarAlwaysOff );
+    //ui->graphicsView->setSceneRect(rec->sceneRect());
 }
 
 
@@ -117,6 +124,8 @@ void MainWindow::on_imageList_itemDoubleClicked()
     ui->imageDisplay->setPixmap(QPixmap::fromImage(image));
 
     isImage = true;
+    ui->saveButton->setEnabled(true);
+    ui->loadButton->setEnabled(true);
 }
 
 
@@ -190,6 +199,7 @@ void MainWindow::on_dateSortButton_clicked()
 
 void MainWindow::on_classLoad_clicked()//failed load still opens buttons
 {
+
     QString filter ="Text File(*.txt)";
     QString selectFile = QFileDialog::getOpenFileName(this,"Please Select A Class File","C://",filter);
     QFile classesFile(selectFile);
@@ -317,9 +327,6 @@ void MainWindow::on_classAsc_clicked()
 
 }
 
-
-
-
 void MainWindow::on_drawShape_clicked(bool checked)
 {
     if (checked == true)
@@ -342,20 +349,19 @@ void MainWindow::on_classList_currentItemChanged(QListWidgetItem *current, QList
     rec->ClassName = ui->classList->currentItem()->text();
 }
 
-void MainWindow::on_saveYOLOButton_clicked()
+void MainWindow::on_saveButton_clicked()
 {
-    QJsonObject recordObject;
-    recordObject.insert("FirstName", QJsonValue::fromVariant(1));
-    recordObject.insert("LastName", QJsonValue::fromVariant("Doe"));
-    recordObject.insert("Age", QJsonValue::fromVariant(43));
+    QString Save = QFileDialog::getSaveFileName(this,tr("Please Name And Select Location"),tr("C://*.annotations"));
+    rec->saveJson(Save, ui->imageList->currentItem()->text());
+}
 
+void MainWindow::on_loadButton_clicked()
+{
+    QString Load = QFileDialog::getOpenFileName(this,tr("Please Choose an Annotation File"),tr("C://*.annotations"));
+    rec->readJson(Load);
+}
 
-
-
-    QJsonDocument doc(recordObject);
-
-    QFile jsonFile("test.json");
-    jsonFile.open(QFile::WriteOnly);
-    jsonFile.write(doc.toJson());
-
+void MainWindow::on_restoreButton_clicked()
+{
+    rec->clearRec();
 }

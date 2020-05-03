@@ -13,7 +13,9 @@
 #include <QKeyEvent>
 #include <QJsonObject>
 #include <QJsonDocument>
+#include <QJsonArray>
 #include <QString>
+#include <QFileDialog>
 #include <QVariant>
 
 class Rec : public QGraphicsScene
@@ -23,18 +25,24 @@ public:
     Rec(QObject* parent = 0);
     void setMode(Mode mode);
     QString ClassName;
+    bool Test;
+    int NoItems;
+
+    void clearRec();
+    void saveJson(QString file,QString ImageName);
+    void readJson(QString Load);
+
 
 protected:
     void mousePressEvent(QGraphicsSceneMouseEvent *event);
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event);
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event);
     void keyPressEvent(QKeyEvent *event);
-    void saveJson(QString fileName);
+    void drawJson(int x,int y,int Height,int Width,QString annotation);
 
 private:
     Mode sceneMode;
     QPointF origPoint;
-    QGraphicsItemGroup *group;
     QGraphicsRectItem* itemToDraw;
     QGraphicsSimpleTextItem* simpleTextToDraw;
 
